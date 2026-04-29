@@ -36,6 +36,3 @@ def jogo():
     return("Obrigado por jogar!")
 
 print(jogo())
-
-
-
