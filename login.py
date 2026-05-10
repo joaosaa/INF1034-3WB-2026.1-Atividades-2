@@ -18,8 +18,10 @@ fundo_blur = transform.smoothscale(fundo_small, (LARGURA, ALTURA))
 fonte = font.SysFont("Arial", 30)
 fonte_peq = font.SysFont("Arial", 24)
 
+
 def valida_email(email):
     return "@puc.com" in email
+
 
 def valida_senha(senha):
     return len(senha) >= 8 and any(c.isupper() for c in senha) and any(c.islower() for c in senha) and any(c.isdigit() for c in senha)
@@ -35,9 +37,11 @@ cursor_time = 0
 
 logado = False
 tempo_login = 0
-trocar = False
 
-while True:
+rodando = True
+
+
+while rodando:
 
     clock.tick(60)
 
@@ -54,24 +58,24 @@ while True:
         cursor = not cursor
         cursor_time = 0
 
-    for event in event.get():
+    for ev in event.get():
 
-        if event.type == QUIT:
+        if ev.type == QUIT:
             quit()
             sys.exit()
 
-        if event.type == KEYDOWN and not logado:
+        if ev.type == KEYDOWN and not logado:
 
-            if event.key == K_TAB:
+            if ev.key == K_TAB:
                 campo = "senha" if campo == "email" else "email"
 
-            elif event.key == K_BACKSPACE:
+            elif ev.key == K_BACKSPACE:
                 if campo == "email":
                     email = email[:-1]
                 else:
                     senha = senha[:-1]
 
-            elif event.key == K_RETURN:
+            elif ev.key == K_RETURN:
 
                 if not valida_email(email):
                     msg = "Email inválido!"
@@ -86,12 +90,14 @@ while True:
 
             else:
                 if campo == "email":
-                    email += event.unicode
+                    email += ev.unicode
                 else:
-                    senha += event.unicode
+                    senha += ev.unicode
+
     draw.rect(tela, (255, 255, 255), (120, 80, 460, 320), border_radius=15)
 
-    tela.blit(fonte.render("LOGIN", True, (0, 0, 0)), (300, 110))
+    tela.blit(fonte.render("LOGIN CASINHA", True, (0, 0, 0)), (230, 110))
+    tela.blit(fonte_peq.render("Aperte tab para trocar!", True, (130, 238, 130)), (230, 320))
 
     cor_email = (0, 200, 0) if campo == "email" else (0, 0, 0)
 
@@ -123,4 +129,7 @@ while True:
             tempo_login = time.get_ticks()
 
         if time.get_ticks() - tempo_login > 2000:
-        import casinha
+
+            rodando = False
+            import casinha
+
